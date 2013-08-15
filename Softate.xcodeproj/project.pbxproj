@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2491F23617BD097F00E88E37 /* MeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2491F23517BD097F00E88E37 /* MeterView.m */; };
 		24F0690717BBB21D00529EFB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F0690617BBB21D00529EFB /* Foundation.framework */; };
 		24F0690917BBB21D00529EFB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F0690817BBB21D00529EFB /* CoreGraphics.framework */; };
 		24F0690B17BBB21D00529EFB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F0690A17BBB21D00529EFB /* UIKit.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2491F23417BD097F00E88E37 /* MeterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeterView.h; sourceTree = "<group>"; };
+		2491F23517BD097F00E88E37 /* MeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeterView.m; sourceTree = "<group>"; };
 		24F0690317BBB21D00529EFB /* Softate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Softate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24F0690617BBB21D00529EFB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		24F0690817BBB21D00529EFB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -112,6 +115,8 @@
 		24F0690C17BBB21D00529EFB /* Softate */ = {
 			isa = PBXGroup;
 			children = (
+				2491F23417BD097F00E88E37 /* MeterView.h */,
+				2491F23517BD097F00E88E37 /* MeterView.m */,
 				24F0691517BBB21D00529EFB /* AppDelegate.h */,
 				24F0691617BBB21D00529EFB /* AppDelegate.m */,
 				24F0691817BBB21D00529EFB /* Main.storyboard */,
@@ -199,6 +204,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Gabriel Borges Fernandes";
 				TargetAttributes = {
+					24F0690217BBB21C00529EFB = {
+						DevelopmentTeam = 8384FUCWW9;
+					};
 					24F0692317BBB21D00529EFB = {
 						TestTargetID = 24F0690217BBB21C00529EFB;
 					};
@@ -251,6 +259,7 @@
 			files = (
 				24F0691D17BBB21D00529EFB /* ViewController.m in Sources */,
 				24F0691717BBB21D00529EFB /* AppDelegate.m in Sources */,
+				2491F23617BD097F00E88E37 /* MeterView.m in Sources */,
 				24F0691317BBB21D00529EFB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,9 +383,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Softate/Softate-Prefix.pch";
 				INFOPLIST_FILE = "Softate/Softate-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -387,9 +398,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Softate/Softate-Prefix.pch";
 				INFOPLIST_FILE = "Softate/Softate-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -454,6 +467,7 @@
 				24F0693717BBB21E00529EFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		24F0693817BBB21E00529EFB /* Build configuration list for PBXNativeTarget "SoftateTests" */ = {
 			isa = XCConfigurationList;
@@ -462,6 +476,7 @@
 				24F0693A17BBB21E00529EFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
