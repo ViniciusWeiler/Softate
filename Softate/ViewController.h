@@ -9,22 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "Meterview.h"
 
-@interface ViewController : UIViewController <NSStreamDelegate, UITextFieldDelegate>
-{
+@interface ViewController : UIViewController <NSStreamDelegate, UITextFieldDelegate> {
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
-    NSMutableArray *messages;
+    NSMutableData *incomingData;
 }
+
 @property (weak, nonatomic) IBOutlet UILabel *labelOne;
 @property (weak, nonatomic) IBOutlet UITextField *entradaIP;
 @property (weak, nonatomic) IBOutlet UIButton *pegaIP;
 @property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UILabel *statusClient;
 @property (weak, nonatomic) IBOutlet UISlider *timeSlider;
-@property (readwrite) NSInputStream *inputStream;
-@property (readwrite) NSOutputStream *outputStream;
 @property (weak, nonatomic) IBOutlet meterView *meterView;
-
-
 
 @end
