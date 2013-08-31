@@ -24,18 +24,35 @@
     [self.timeSlider setValue:0.0 animated:YES]; //MAYBE CHANGE
     [self.timeSlider setHidden:NO];
     self.meterView.arcLength = M_PI;
-	
 	self.meterView.value = 0.0;
 	self.meterView.textLabel.text = @"Volts";
 	self.meterView.minNumber = 0.0;
 	self.meterView.maxNumber = 220.0;
 	self.meterView.textLabel.font = [UIFont fontWithName:@"Cochin-BoldItalic" size:15.0];
 	self.meterView.textLabel.textColor = [UIColor blackColor];
-	self.meterView.needle.tintColor = [UIColor blackColor];
+    CGFloat r=0,g=122,b=255;
+	self.meterView.needle.tintColor = [UIColor colorWithRed:r/255 green:g/255 blue:b/255 alpha:1];
 	self.meterView.needle.width = 1.0;
 	self.meterView.value = 0.0;
     [self initNetworkCommunication];
     incomingData = [[NSMutableData alloc] init];
+    CGRect rect = self.meterView.frame;
+    float x=75;
+    float yc=50;
+    float w=0;
+    float y=10;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    while (w<=rect.size.width) {
+        CGPathMoveToPoint(path, nil, w,y/2);
+        CGPathAddQuadCurveToPoint(path, nil, w+x/4, -yc,w+ x/2, y/2);
+        CGPathMoveToPoint(path, nil, w+x/2,y/2);
+        CGPathAddQuadCurveToPoint(path, nil, w+3*x/4, y+yc, w+x, y/2);
+        CGContextAddPath(context, path);
+        CGContextDrawPath(context, kCGPathStroke);
+        w+=x;
+    }
+    
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
@@ -80,6 +97,9 @@
     
     [entradaIP resignFirstResponder];
     return YES;
+}
+- (IBAction)didTouchUpOutside:(UITextField *)sender {
+    [entradaIP resignFirstResponder];
 }
 
 - (void)initNetworkCommunication {

@@ -15,6 +15,7 @@
     NSMutableData *incomingData;
 }
 
+@property (weak, nonatomic) IBOutlet UIView *secondView;
 @property (weak, nonatomic) IBOutlet UILabel *labelOne;
 @property (weak, nonatomic) IBOutlet UITextField *entradaIP;
 @property (weak, nonatomic) IBOutlet UIButton *pegaIP;
