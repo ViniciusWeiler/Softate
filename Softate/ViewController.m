@@ -18,6 +18,8 @@
 @synthesize entradaIP;
 @synthesize timeSlider;
 
+NSString *charValue;
+
 - (void)viewDidLoad
 {
     [entradaIP setDelegate:self];
@@ -105,7 +107,7 @@
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"10.244.5.28", 5000, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5000, &readStream, &writeStream);
     inputStream = (NSInputStream *)CFBridgingRelease(readStream);
     outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     [inputStream setDelegate:self];
@@ -114,21 +116,27 @@
     [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [inputStream open];
     [outputStream open];
-    NSString *response  = [NSString stringWithFormat:@"iam:%@", @"iPod"];
+    NSString *response  = [NSString stringWithFormat:@"%c",(char)(5)];
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[outputStream write:[data bytes] maxLength:[data length]];
 }
 
 - (IBAction)didChangeSlider:(UISlider *)sender {
     self.meterView.value = (self.timeSlider.value * 220);
-    [entradaIP setText:[NSString stringWithFormat:@"%d",(unsigned char)((self.timeSlider.value * 50)+5)]];
+    [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
 }
 
 - (IBAction)didPress:(UIButton *)sender {
-    [entradaIP setText:[NSString stringWithFormat:@"%d",(unsigned char)((self.timeSlider.value * 50)+5)]];
-    NSString *response  = entradaIP.text;
+    [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
+    NSString *response  = [NSString stringWithFormat:@"%c",(char)((self.timeSlider.value * 50)+5)];
 	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 	[outputStream write:[data bytes] maxLength:[data length]];
+    unsigned char *n = data.bytes;
+    int value1 = n[0];
+    int value2 = n[1];
+    NSLog(@"Valor: %d",n[0]);
+    NSLog(@"Valor: %d",n[1]);
+    NSLog(@"Tamanho: %d",data.length);
 }
 
 - (void) messageReceived:(NSString *)message {
