@@ -17,20 +17,24 @@
 
 @synthesize entradaIP;
 @synthesize timeSlider;
+@synthesize keepTurnedOn;
+@synthesize timeToShutDown;
 
 NSString *charValue;
 
 - (void)viewDidLoad
 {
     [entradaIP setDelegate:self];
+    [timeToShutDown setDelegate:self];
+    [keepTurnedOn setDelegate:self];
     [self.timeSlider setValue:0.0 animated:YES]; //MAYBE CHANGE
     [self.timeSlider setHidden:NO];
-    self.meterView.arcLength = M_PI;
+    self.meterView.arcLength =  M_PI;
 	self.meterView.value = 0.0;
-	self.meterView.textLabel.text = @"Volts";
+	self.meterView.textLabel.text = @"Sobre corrente (%)";
 	self.meterView.minNumber = 0.0;
-	self.meterView.maxNumber = 220.0;
-	self.meterView.textLabel.font = [UIFont fontWithName:@"Cochin-BoldItalic" size:15.0];
+	self.meterView.maxNumber = 200.0;
+	self.meterView.textLabel.font = [UIFont fontWithName:@"Cochin-BoldItalic" size:13.0];
 	self.meterView.textLabel.textColor = [UIColor blackColor];
     CGFloat r=0,g=122,b=255;
 	self.meterView.needle.tintColor = [UIColor colorWithRed:r/255 green:g/255 blue:b/255 alpha:1];
@@ -98,10 +102,9 @@ NSString *charValue;
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     
     [entradaIP resignFirstResponder];
+    [keepTurnedOn resignFirstResponder];
+    [timeToShutDown resignFirstResponder];
     return YES;
-}
-- (IBAction)didTouchUpOutside:(UITextField *)sender {
-    [entradaIP resignFirstResponder];
 }
 
 - (void)initNetworkCommunication {
@@ -116,32 +119,54 @@ NSString *charValue;
     [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [inputStream open];
     [outputStream open];
-    NSString *response  = [NSString stringWithFormat:@"%c",(char)(5)];
-	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-	[outputStream write:[data bytes] maxLength:[data length]];
 }
 
 - (IBAction)didChangeSlider:(UISlider *)sender {
-    self.meterView.value = (self.timeSlider.value * 220);
+    //self.meterView.value = (self.timeSlider.value * 220);
     [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
+    [keepTurnedOn setText:[NSString stringWithFormat:@"%d",(char)(self.timeSlider.value * 14)+1]];
+    [timeToShutDown setText:[NSString stringWithFormat:@"%d",(char)(self.timeSlider.value * 7)+3]];
+}
+- (IBAction)didPressEmergency:(UIButton *)sender {
+    NSString *response = [NSString stringWithFormat:@"%c",(char)56];
+    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+    [outputStream write:[data bytes] maxLength:[data length]];
 }
 
 - (IBAction)didPress:(UIButton *)sender {
-    [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
-    NSString *response  = [NSString stringWithFormat:@"%c",(char)((self.timeSlider.value * 50)+5)];
-	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-	[outputStream write:[data bytes] maxLength:[data length]];
-    unsigned char *n = data.bytes;
-    int value1 = n[0];
-    int value2 = n[1];
-    NSLog(@"Valor: %d",n[0]);
-    NSLog(@"Valor: %d",n[1]);
-    NSLog(@"Tamanho: %d",data.length);
+    NSString *response;//  = [NSString stringWithFormat:@"%c",(char)self.entradaIP.text];
+    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+
+        [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
+        response  = [NSString stringWithFormat:@"%c",(char)((self.timeSlider.value * 50)+5)];
+        //response  = [NSString stringWithFormat:@"%c",(char)(self.entradaIP.text)];
+        data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+        [outputStream write:[data bytes] maxLength:[data length]];
+        NSLog(@"%@",response);
+    
+        [keepTurnedOn setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 14)+1)]];
+        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeSlider.value * 14)+1)+100)];
+        //response  = [NSString stringWithFormat:@"%c",(char)(self.keepTurnedOn.text)];
+        data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+        [outputStream write:[data bytes] maxLength:[data length]];
+        NSLog(@"%@",response);
+    
+        [timeToShutDown setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 7)+3)]];
+        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeSlider.value * 7)+3)+60)];
+        data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+        [outputStream write:[data bytes] maxLength:[data length]];
+        NSLog(@"%@",response);
+    
+    NSString *start1  = [NSString stringWithFormat:@"%c",(char)57];
+    NSData *start = [[NSData alloc] initWithData:[start1 dataUsingEncoding:NSASCIIStringEncoding]];
+	[outputStream write:[start bytes] maxLength:[start length]];
+    NSLog(@"%@",start1);
 }
 
 - (void) messageReceived:(NSString *)message {
     //if (![message hasPrefix:@"iPod"]) {
-    [self.statusClient setText:message];//[NSString stringWithFormat:@"%d",(unsigned char) message]];
+    //[self.statusClient setText:message];//[NSString stringWithFormat:@"%d",(unsigned char) message]];
+    self.meterView.value = (((char) (message) * 200) / 255);
     //}
 }
  

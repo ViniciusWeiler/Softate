@@ -18,26 +18,20 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mdo-yQ-Jmw" customClass="meterView">
-                                <rect key="frame" x="0.0" y="259" width="320" height="285"/>
+                                <rect key="frame" x="0.0" y="311" width="320" height="285"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="000000000000000000000000000000-crop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="5AW-aa-qUb">
-                                <rect key="frame" x="20" y="41" width="280" height="51"/>
+                                <rect key="frame" x="20" y="20" width="280" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dca-Zz-Wr6">
-                                <rect key="frame" x="20" y="100" width="280" height="151"/>
+                                <rect key="frame" x="20" y="80" width="280" height="223"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6g-XI-HBg">
-                                        <rect key="frame" x="0.0" y="14" width="280" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="BodoniSvtyTwoSCITCTT-Book" family="Bodoni 72 Smallcaps" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Valor do dado" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Edl-uL-PGQ">
-                                        <rect key="frame" x="0.0" y="93" width="280" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ligar em:" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Edl-uL-PGQ">
+                                        <rect key="frame" x="20" y="79" width="240" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="BodoniSvtyTwoSCITCTT-Book" family="Bodoni 72 Smallcaps" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -46,7 +40,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eXw-So-AXd">
-                                        <rect key="frame" x="0.0" y="121" width="280" height="30"/>
+                                        <rect key="frame" x="76" y="193" width="129" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="BodoniSvtyTwoSCITCTT-Book" family="Bodoni 72 Smallcaps" pointSize="15"/>
                                         <state key="normal" title="Enviar dados">
@@ -57,12 +51,40 @@
                                         </connections>
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NC9-1Z-O4f">
-                                        <rect key="frame" x="-2" y="43" width="284" height="34"/>
+                                        <rect key="frame" x="-2" y="38" width="284" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <action selector="didChangeSlider:" destination="vXZ-lx-hvc" eventType="valueChanged" id="VZx-6r-ApK"/>
                                         </connections>
                                     </slider>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Manter ligado por:" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KGp-bF-qhl">
+                                        <rect key="frame" x="20" y="117" width="240" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="didTouchUpOutsideKeepTurnedOn:" destination="vXZ-lx-hvc" eventType="touchUpOutside" id="qZ7-yI-bXT"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Desligar em:" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KSC-Ui-vS6">
+                                        <rect key="frame" x="20" y="155" width="240" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="didTouchUpOutsideTimeToShutDown:" destination="vXZ-lx-hvc" eventType="touchUpOutside" id="R3t-tx-c4P"/>
+                                        </connections>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEp-vr-8mP">
+                                        <rect key="frame" x="76" y="0.0" width="129" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="EMERGÊNCIA">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didPressEmergency:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qes-RX-qnA"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -71,13 +93,15 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="emergency" destination="WEp-vr-8mP" id="wCQ-XH-Xjm"/>
                         <outlet property="entradaIP" destination="Edl-uL-PGQ" id="JuZ-9F-b0P"/>
+                        <outlet property="keepTurnedOn" destination="KGp-bF-qhl" id="6oG-vi-5CR"/>
                         <outlet property="mainView" destination="kh9-bI-dsS" id="cgb-V8-dAV"/>
                         <outlet property="meterView" destination="Mdo-yQ-Jmw" id="T6a-jP-fHe"/>
                         <outlet property="pegaIP" destination="eXw-So-AXd" id="RvO-iT-p8n"/>
                         <outlet property="secondView" destination="Dca-Zz-Wr6" id="Teu-L1-Y32"/>
-                        <outlet property="statusClient" destination="Y6g-XI-HBg" id="Ujs-9o-MaP"/>
                         <outlet property="timeSlider" destination="NC9-1Z-O4f" id="UcB-IW-4wY"/>
+                        <outlet property="timeToShutDown" destination="KSC-Ui-vS6" id="Dx0-Vd-0ha"/>
                         <outlet property="view" destination="kh9-bI-dsS" id="2ma-dx-iyJ"/>
                     </connections>
                 </viewController>
