@@ -572,7 +572,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/GBF/Documents/Git\\ copies/Softate",
 					/Users/Vini/Documents/Goiaba/Softate/CorePlot,
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -593,7 +592,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/GBF/Documents/Git\\ copies/Softate",
 					/Users/Vini/Documents/Goiaba/Softate/CorePlot,
 				);
 				OTHER_LDFLAGS = "-ObjC";

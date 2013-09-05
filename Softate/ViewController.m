@@ -19,16 +19,23 @@
 @synthesize timeSlider;
 @synthesize keepTurnedOn;
 @synthesize timeToShutDown;
+@synthesize timeToSoftlyShutDown;
+@synthesize timeToStayOn;
 
 NSString *charValue;
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     [entradaIP setDelegate:self];
     [timeToShutDown setDelegate:self];
     [keepTurnedOn setDelegate:self];
     [self.timeSlider setValue:0.0 animated:YES]; //MAYBE CHANGE
     [self.timeSlider setHidden:NO];
+    [self.timeToSoftlyShutDown setValue:0.0 animated:YES]; //MAYBE CHANGE
+    [self.timeToSoftlyShutDown setHidden:NO];
+    [self.timeToStayOn setValue:0.0 animated:YES]; //MAYBE CHANGE
+    [self.timeToStayOn setHidden:NO];
     self.meterView.arcLength =  M_PI;
 	self.meterView.value = 0.0;
 	self.meterView.textLabel.text = @"Sobre corrente (%)";
@@ -42,24 +49,10 @@ NSString *charValue;
 	self.meterView.value = 0.0;
     [self initNetworkCommunication];
     incomingData = [[NSMutableData alloc] init];
-    CGRect rect = self.meterView.frame;
-    float x=75;
-    float yc=50;
-    float w=0;
-    float y=10;
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    while (w<=rect.size.width) {
-        CGPathMoveToPoint(path, nil, w,y/2);
-        CGPathAddQuadCurveToPoint(path, nil, w+x/4, -yc,w+ x/2, y/2);
-        CGPathMoveToPoint(path, nil, w+x/2,y/2);
-        CGPathAddQuadCurveToPoint(path, nil, w+3*x/4, y+yc, w+x, y/2);
-        CGContextAddPath(context, path);
-        CGContextDrawPath(context, kCGPathStroke);
-        w+=x;
+    if(UIAccessibilityIsVoiceOverRunning()) {
+        NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
     }
-    
-    [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -110,7 +103,7 @@ NSString *charValue;
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5000, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"10.244.5.47", 5002, &readStream, &writeStream);
     inputStream = (NSInputStream *)CFBridgingRelease(readStream);
     outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     [inputStream setDelegate:self];
@@ -122,52 +115,70 @@ NSString *charValue;
 }
 
 - (IBAction)didChangeSlider:(UISlider *)sender {
-    //self.meterView.value = (self.timeSlider.value * 220);
-    [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
-    [keepTurnedOn setText:[NSString stringWithFormat:@"%d",(char)(self.timeSlider.value * 14)+1]];
-    [timeToShutDown setText:[NSString stringWithFormat:@"%d",(char)(self.timeSlider.value * 7)+3]];
+    [entradaIP setText:[NSString stringWithFormat:@"Starts in: %d s",(char)((self.timeSlider.value * 50)+5)]];
 }
 - (IBAction)didPressEmergency:(UIButton *)sender {
     NSString *response = [NSString stringWithFormat:@"%c",(char)56];
     NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
     [outputStream write:[data bytes] maxLength:[data length]];
+    NSLog(@"%@",response);
+}
+- (IBAction)didChangeSliderToStayOn:(UISlider *)sender {
+    [keepTurnedOn setText:[NSString stringWithFormat:@"On max for: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+}
+- (IBAction)didChangeSliderToSoftlyShutDown:(UISlider *)sender {
+    [timeToShutDown setText:[NSString stringWithFormat:@"Shut down in: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+}
+- (IBAction)willTryConnection:(UIButton *)sender {
+    [self initNetworkCommunication];
 }
 
 - (IBAction)didPress:(UIButton *)sender {
     NSString *response;//  = [NSString stringWithFormat:@"%c",(char)self.entradaIP.text];
     NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
 
-        [entradaIP setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 50)+5)]];
         response  = [NSString stringWithFormat:@"%c",(char)((self.timeSlider.value * 50)+5)];
-        //response  = [NSString stringWithFormat:@"%c",(char)(self.entradaIP.text)];
         data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
         [outputStream write:[data bytes] maxLength:[data length]];
-        NSLog(@"%@",response);
+        char debug1 = [response characterAtIndex:0];
+        NSLog(@"%c",debug1);
     
-        [keepTurnedOn setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 14)+1)]];
-        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeSlider.value * 14)+1)+100)];
-        //response  = [NSString stringWithFormat:@"%c",(char)(self.keepTurnedOn.text)];
+        //[keepTurnedOn setText:[NSString stringWithFormat:@"%d",(char)((self.timeToStayOn.value * 14)+1)]];
+        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeToStayOn.value * 26)+1)+100)];
         data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
         [outputStream write:[data bytes] maxLength:[data length]];
-        NSLog(@"%@",response);
+        //NSLog(@"%@",response);
+        debug1 = [response characterAtIndex:0];
+        NSLog(@"%c",debug1);
     
-        [timeToShutDown setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 7)+3)]];
-        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeSlider.value * 7)+3)+60)];
+        //[timeToShutDown setText:[NSString stringWithFormat:@"%d",(char)((self.timeSlider.value * 7)+3)]];
+        response  = [NSString stringWithFormat:@"%c",(char)(((self.timeToSoftlyShutDown.value * 35)+5)+60)];
         data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
         [outputStream write:[data bytes] maxLength:[data length]];
-        NSLog(@"%@",response);
+        //NSLog(@"%@",response);
+        debug1 = [response characterAtIndex:0];
+        NSLog(@"%c",debug1);
+    
+    if(UIAccessibilityIsVoiceOverRunning()) {
+        NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
+    }
     
     NSString *start1  = [NSString stringWithFormat:@"%c",(char)57];
     NSData *start = [[NSData alloc] initWithData:[start1 dataUsingEncoding:NSASCIIStringEncoding]];
 	[outputStream write:[start bytes] maxLength:[start length]];
-    NSLog(@"%@",start1);
+    //NSLog(@"%@",start1);
+    debug1 = [start1 characterAtIndex:0];
+    NSLog(@"%c",debug1);
 }
 
 - (void) messageReceived:(NSString *)message {
-    //if (![message hasPrefix:@"iPod"]) {
-    //[self.statusClient setText:message];//[NSString stringWithFormat:@"%d",(unsigned char) message]];
-    self.meterView.value = (((char) (message) * 200) / 255);
-    //}
+    self.meterView.value = (((unsigned char) (message) * 200) / 190);
+    if(self.meterView.value > 190) {
+        NSString *response = [NSString stringWithFormat:@"%c",(char)56];
+        NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+        [outputStream write:[data bytes] maxLength:[data length]];
+    }
 }
  
 @end

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D42D2C6F-0D01-40D4-A793-2DCBCC0FA3AE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Softate</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>70250178-B60D-4828-A559-5711C7A52A85</key>
+		<string>https://github.com/ViniciusWeiler/Softate.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Softate.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>70250178-B60D-4828-A559-5711C7A52A85</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ViniciusWeiler/Softate.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>70250178-B60D-4828-A559-5711C7A52A85</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>70250178-B60D-4828-A559-5711C7A52A85</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Softate</string>
+		</dict>
+	</array>
+</dict>
+</plist>

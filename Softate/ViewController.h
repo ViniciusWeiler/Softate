@@ -26,5 +26,8 @@
 @property (weak, nonatomic) IBOutlet UISlider *timeSlider;
 @property (weak, nonatomic) IBOutlet meterView *meterView;
 @property (weak, nonatomic) IBOutlet UIButton *emergency;
+@property (weak, nonatomic) IBOutlet UISlider *timeToStayOn;
+@property (weak, nonatomic) IBOutlet UISlider *timeToSoftlyShutDown;
+@property (weak, nonatomic) IBOutlet UIButton *connectSocket;
 
 @end
