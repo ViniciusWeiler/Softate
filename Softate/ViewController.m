@@ -54,6 +54,8 @@ NSString *charValue;
 	self.meterView.value = 0.0;
     [self initNetworkCommunication];
     incomingData = [[NSMutableData alloc] init];
+    NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in @""%@"" Sekunden eingeschalted werden, bleibt völlig eingeschalted @""%@"" Sekunded lang und wird langsam schalten in @""%@"" Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -104,7 +106,7 @@ NSString *charValue;
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5000, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5002, &readStream, &writeStream);
     inputStream = (NSInputStream *)CFBridgingRelease(readStream);
     outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     [inputStream setDelegate:self];
@@ -194,10 +196,10 @@ NSString *charValue;
     
     if(UIAccessibilityIsVoiceOverRunning()) {
         if(!isPortugueseOn) {
-            NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+            NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in @""%@"" Sekunden eingeschalted werden, bleibt völlig eingeschalted @""%@"" Sekunded lang und wird langsam schalten in @""%@"" Sekunden.",entradaIP.text,keepTurnedOn.text, timeToShutDown.text];
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
         } else {
-            NSString *irineu = [NSString stringWithFormat:@"O motor ligará em %@ segundos, Permanecerá completamente ligado por %@ segundos e será desligado em %@ segundos.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+            NSString *irineu = [NSString stringWithFormat:@"O motor ligará em @""%@"" segundos, Permanecerá completamente ligado por @""%@"" segundos e será desligado em @""%@"" segundos.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
             UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
         }
     }
