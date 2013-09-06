@@ -29,5 +29,6 @@
 @property (weak, nonatomic) IBOutlet UISlider *timeToStayOn;
 @property (weak, nonatomic) IBOutlet UISlider *timeToSoftlyShutDown;
 @property (weak, nonatomic) IBOutlet UIButton *connectSocket;
+@property (weak, nonatomic) IBOutlet UIButton *changeLanguage;
 
 @end

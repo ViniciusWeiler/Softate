@@ -21,6 +21,11 @@
 @synthesize timeToShutDown;
 @synthesize timeToSoftlyShutDown;
 @synthesize timeToStayOn;
+@synthesize pegaIP;
+@synthesize connectSocket;
+@synthesize changeLanguage;
+@synthesize emergency;
+BOOL isPortugueseOn = NO;
 
 NSString *charValue;
 
@@ -49,10 +54,6 @@ NSString *charValue;
 	self.meterView.value = 0.0;
     [self initNetworkCommunication];
     incomingData = [[NSMutableData alloc] init];
-    if(UIAccessibilityIsVoiceOverRunning()) {
-        NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
-    }
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -103,7 +104,7 @@ NSString *charValue;
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"10.244.5.47", 5002, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5000, &readStream, &writeStream);
     inputStream = (NSInputStream *)CFBridgingRelease(readStream);
     outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     [inputStream setDelegate:self];
@@ -115,7 +116,11 @@ NSString *charValue;
 }
 
 - (IBAction)didChangeSlider:(UISlider *)sender {
-    [entradaIP setText:[NSString stringWithFormat:@"Starts in: %d s",(char)((self.timeSlider.value * 50)+5)]];
+    if(!isPortugueseOn){
+        [entradaIP setText:[NSString stringWithFormat:@"Aktivieren Sie in: %d s",(char)((self.timeSlider.value * 50)+5)]];
+    } else {
+        [entradaIP setText:[NSString stringWithFormat:@"Ligado em: %d s",(char)((self.timeSlider.value * 50)+5)]];
+    }
 }
 - (IBAction)didPressEmergency:(UIButton *)sender {
     NSString *response = [NSString stringWithFormat:@"%c",(char)56];
@@ -124,13 +129,41 @@ NSString *charValue;
     NSLog(@"%@",response);
 }
 - (IBAction)didChangeSliderToStayOn:(UISlider *)sender {
-    [keepTurnedOn setText:[NSString stringWithFormat:@"On max for: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+    if(!isPortugueseOn){
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in:: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+    } else {
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Ligado por: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+    }
 }
 - (IBAction)didChangeSliderToSoftlyShutDown:(UISlider *)sender {
-    [timeToShutDown setText:[NSString stringWithFormat:@"Shut down in: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+    if(!isPortugueseOn) {
+        [timeToShutDown setText:[NSString stringWithFormat:@"Off auf: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+    } else {
+        [timeToShutDown setText:[NSString stringWithFormat:@"Desligado em: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+    }
 }
 - (IBAction)willTryConnection:(UIButton *)sender {
     [self initNetworkCommunication];
+}
+- (IBAction)didChangeLanguage:(UIButton *)sender {
+    isPortugueseOn = !isPortugueseOn;
+    if(isPortugueseOn) {
+        [entradaIP setText:[NSString stringWithFormat:@"Ligado em: %d s",(char)((self.timeSlider.value * 50)+5)]];
+        [timeToShutDown setText:[NSString stringWithFormat:@"Desligado em: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Ligado por: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+        [emergency setTitle:@"EMERGÊNCIA" forState: UIControlStateNormal];
+        [pegaIP setTitle:@"Iniciar SoftStarter" forState: UIControlStateNormal];
+        [connectSocket setTitle:@"Conectar" forState: UIControlStateNormal];
+        [changeLanguage setTitle:@"Idioma" forState: UIControlStateNormal];
+    } else {
+        [entradaIP setText:[NSString stringWithFormat:@"Aktivieren Sie in: %d s",(char)((self.timeSlider.value * 50)+5)]];
+        [timeToShutDown setText:[NSString stringWithFormat:@"Off auf: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in:: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+        [emergency setTitle:@"Notfall" forState: UIControlStateNormal];
+        [pegaIP setTitle:@"IDrehen Sie den SoftStarter auf" forState: UIControlStateNormal];
+        [connectSocket setTitle:@"Verbinden" forState: UIControlStateNormal];
+        [changeLanguage setTitle:@"Sprache" forState: UIControlStateNormal];
+    }
 }
 
 - (IBAction)didPress:(UIButton *)sender {
@@ -160,8 +193,13 @@ NSString *charValue;
         NSLog(@"%c",debug1);
     
     if(UIAccessibilityIsVoiceOverRunning()) {
-        NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
+        if(!isPortugueseOn) {
+            NSString *irineu = [NSString stringWithFormat:@"Der Motor wird in %@ Sekunden eingeschalted werden, bleibt völlig eingeschalted %@ Sekunded lang und wird langsam schalten in %@ Sekunden.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
+        } else {
+            NSString *irineu = [NSString stringWithFormat:@"O motor ligará em %@ segundos, Permanecerá completamente ligado por %@ segundos e será desligado em %@ segundos.",self.entradaIP.text,self.keepTurnedOn.text, self.timeToShutDown.text];
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,irineu);
+        }
     }
     
     NSString *start1  = [NSString stringWithFormat:@"%c",(char)57];
