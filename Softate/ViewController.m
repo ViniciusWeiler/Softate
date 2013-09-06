@@ -213,8 +213,10 @@ NSString *charValue;
 }
 
 - (void) messageReceived:(NSString *)message {
-    self.meterView.value = (((unsigned char) (message) * 200) / 190);
-    if(self.meterView.value > 190) {
+    unsigned char message2 = [message characterAtIndex:0];
+    NSLog(@"%d",message2);
+    self.meterView.value = (((unsigned char) (message2) * 200) / 170);
+    if(message2 > 170) {
         NSString *response = [NSString stringWithFormat:@"%c",(char)56];
         NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
         [outputStream write:[data bytes] maxLength:[data length]];
