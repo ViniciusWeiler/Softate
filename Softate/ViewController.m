@@ -106,7 +106,7 @@ NSString *charValue;
 - (void)initNetworkCommunication {
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"192.168.25.7", 5002, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"10.244.5.47", 5000, &readStream, &writeStream);
     inputStream = (NSInputStream *)CFBridgingRelease(readStream);
     outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
     [inputStream setDelegate:self];
@@ -132,7 +132,7 @@ NSString *charValue;
 }
 - (IBAction)didChangeSliderToStayOn:(UISlider *)sender {
     if(!isPortugueseOn){
-        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in:: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
     } else {
         [keepTurnedOn setText:[NSString stringWithFormat:@"Ligado por: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
     }
@@ -160,7 +160,7 @@ NSString *charValue;
     } else {
         [entradaIP setText:[NSString stringWithFormat:@"Aktivieren Sie in: %d s",(char)((self.timeSlider.value * 50)+5)]];
         [timeToShutDown setText:[NSString stringWithFormat:@"Off auf: %d s",(char)(self.timeToSoftlyShutDown.value * 35)+5]];
-        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in:: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
+        [keepTurnedOn setText:[NSString stringWithFormat:@"Schalten Sie in: %d s",(unsigned char)(self.timeToStayOn.value * 26)+1]];
         [emergency setTitle:@"Notfall" forState: UIControlStateNormal];
         [pegaIP setTitle:@"IDrehen Sie den SoftStarter auf" forState: UIControlStateNormal];
         [connectSocket setTitle:@"Verbinden" forState: UIControlStateNormal];
